@@ -251,7 +251,7 @@ class Net_Telnet
     /**
      * Connect and read timeout
      */
-    protected $timeout = 6;
+    protected $timeout = 10;
 
     /**
      * Command interpreter prompt
@@ -701,7 +701,14 @@ class Net_Telnet
         }
         while ($written < $total) {
             $d = substr($d,$n);
-            if (($n = fwrite($this->s,$d,4096)) === false)
+
+
+            
+            set_error_handler(array($this,"func_notice"), E_NOTICE);
+                $n = fwrite($this->s,$d,4096);
+            restore_error_handler();
+            
+            if ($n === false)
                 if (feof($this->s))
                     break;
                 else
@@ -1768,6 +1775,15 @@ class Net_Telnet
         return $ret;
     }
 
+    
+    static function func_notice($num, $str, $file, $line) {
+        print "Encountered notice $num in $file, line $line: $str\n";
+        if($num == 32){
+            $this->disconnect();
+            $this->connect();
+        }
+    }
+    
 }
 
 ?>

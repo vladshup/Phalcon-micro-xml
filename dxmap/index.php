@@ -12,12 +12,12 @@ try {
     // These settings worked with Allied Telesis cpe:
     $t = new Net_Telnet(array(
         'host'              =>  '62.183.34.131',
-        'debug'             =>  FALSE,
+        'debug'             =>  TRUE,
     ));
 
 //Connect DX-cluster    
     $t->connect();
-
+    $t->echomode('none');
     
 echo $t->login( array(
         'login_prompt'  => 'Please enter your call: ',
@@ -32,11 +32,40 @@ echo $t->login( array(
     
 
 //Get stream from cluster
+$text = array('','','','','','','','','','');
+$i = 0;
     while ($t->online()) {
+        $i++;
         //$data = $t->println();        
         if (($ret = $t->read_stream()) === false)
             break;
-        echo $t->get_data();
+        $spot = $t->get_data();
+        $spot = str_replace(array("\r\n", "\n", "\r"), '', $spot);
+        if(!empty($spot)){
+        
+        echo $spot . "\n";
+
+        $text[9] = $text[8];
+        $text[8] = $text[7];
+        $text[7] = $text[6];
+        $text[6] = $text[5];
+        $text[5] = $text[4];
+        $text[4] = $text[3];
+        $text[3] = $text[2];
+        $text[2] = $text[1];
+        $text[1] = $text[0];
+        $text[0] = $spot."*";
+        
+        $spots = implode("\n", $text);
+        file_put_contents('spots.txt', $spots);
+
+          
+              
+        
+        }
+        $t->put_data('\n');
+        
+        
     }
         
     $t->disconnect();
