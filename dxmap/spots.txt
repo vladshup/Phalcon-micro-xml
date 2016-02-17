@@ -1,0 +1,10 @@
+DX de DL0LPZ:    14187.0  AJ2I         cq VK/Africa/Ind.Oc            2000Z*
+DX de F8DNX:      7045.5  SV1GRB                                      2000Z*
+DX de KA9BBQ:    21313.0  W1INK        SCHOOL CLUB ROUND UP OP:Aaron  1959Z*
+DX de K5HK:      21015.0  7P8C         up 2  1st call he S2.          1959Z*
+DX de HI8CSS:    28121.0  AI6EJ        BPSK63                         1959Z*
+DX de EO90WU:     3511.7  EO90WU       90 years LKK qrz.com           1959Z*
+DX de PA3FYM:     7019.0  XP3A                                        1959Z*
+DX de DL7ET:      3688.0  DL2HWA       use filter mode to ignore      1959Z*
+DX de OK2ZV:      7160.0  9M2PUL       tnx 73                         1958Z*
+DX de LY2J:       3799.1  LY4A         CQ DX                          1958Z*

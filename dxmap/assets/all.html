@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>^title^ at dxmap.ru hamradio service</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-old-ie-min.css">
+<![endif]-->
+<!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+<!--<![endif]-->
+        <link rel="stylesheet" type="text/css" href="assets/style.css">
+        <script src="assets/Chart.min.js"></script>
+    </head>
+    <body>
+        <div class="pure-g header">
+            <div class="pure-u-1-6"><img class="pure-img" src="assets/img/logo.jpg"></div>
+            <div class="pure-u-2-3"><div class="slogan">Hamradio DX-cluster web service</div></div>
+            <div class="pure-u-1-6"><div class="contacts">Telnet: <a href="telnet://dxmap.ru:7300">dxmap.ru:7300</a></div></div>           
+        </div>
+      
+       
+        <div class="pure-menu pure-menu-horizontal h-menu">
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item^/^"><a href="/" class="pure-menu-link">All</a></li>
+                <li class="pure-menu-item^vlf^"><a href="/vlf" class="pure-menu-link">Vlf</a></li>
+                <li class="pure-menu-item^160m^"><a href="/160m" class="pure-menu-link">160m</a></li>
+                <li class="pure-menu-item^80m^"><a href="/80m" class="pure-menu-link">80m</a></li>
+                <li class="pure-menu-item^60m^"><a href="/60m" class="pure-menu-link">60m</a></li>
+                <li class="pure-menu-item^40m^"><a href="/40m" class="pure-menu-link">40m</a></li>
+                <li class="pure-menu-item^30m^"><a href="/30m" class="pure-menu-link">30m</a></li>
+                <li class="pure-menu-item^20m^"><a href="/20m" class="pure-menu-link">20m</a></li>
+                <li class="pure-menu-item^17m^"><a href="/17m" class="pure-menu-link">17m</a></li>
+                <li class="pure-menu-item^15m^"><a href="/15m" class="pure-menu-link">15m</a></li>
+                <li class="pure-menu-item^12m^"><a href="/12m" class="pure-menu-link">12m</a></li>
+                <li class="pure-menu-item^10m^"><a href="/10m" class="pure-menu-link">10m</a></li>
+                <li class="pure-menu-item^6m^"><a href="/6m" class="pure-menu-link">6m</a></li>
+                <li class="pure-menu-item^4m^"><a href="/4m" class="pure-menu-link">4m</a></li>
+                <li class="pure-menu-item^2m^"><a href="/2m" class="pure-menu-link">2m</a></li>
+                <li class="pure-menu-item^70cm^"><a href="/70cm" class="pure-menu-link">70cm</a></li>
+                <li class="pure-menu-item^23cm^"><a href="/23cm" class="pure-menu-link">23cm</a></li>
+                <li class="pure-menu-item^6cm^"><a href="/6cm" class="pure-menu-link">6cm</a></li>
+                <li class="pure-menu-item^3cm^"><a href="/3cm" class="pure-menu-link">3cm</a></li>
+            </ul>
+        </div>
+
+        
+        
+        <div class="pure-g">
+            <div class="pure-u-1-6"><h3>Last hour top DX's</h2>
+                <div class='lbar'>
+                <table class="pure-table pure-table-bordered">
+                    <thead>
+                        <tr>
+                            <th><small>Dx calls</small></th>
+                            <th><small>Spots</small></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    ^topdx^
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            <div class="pure-u-2-3"><h3>Last 20 ^title^</h3><pre id="result" class="glow myfont"></pre>
+                    <div class="pure-g">
+                    <div class="pure-u-1-2"></div>
+                    <div class="pure-u-1-2">
+                        <form class="pure-form" action="/" style="float: right; padding-right: 30px;">
+                            <fieldset>
+                                <input type="text" placeholder="DX-call" name='q'>
+                                <button type="submit" class="pure-button pure-button-primary">Search</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                    </div>
+            <div class="glow pure-u-1"><canvas id="myChart" class="pure-img" width="820" height="200"></canvas></div>
+            <div class="pure-u-1" style="text-align: center;">Activity in the last hour</div>
+            </div>
+            
+            <div class="pure-u-1-6"><h3>Propagation</h2>
+                    <div class='rbar'>
+                    <h3>Northern Auroral Oval</h3>
+                    <img class="pure-img" src="http://services.swpc.noaa.gov/images/animations/ovation-north/latest.png">
+                    </div>
+            </div>
+        </div>
+            <div class="footer l-box is-center">
+                &copy; 2014-^year^ RX3QFM.
+    </div>
+    </body>
+ <script>
+    var source = new EventSource("/srv/all-server.php");
+source.onmessage = function(event) {
+    var spotdata ='';
+    spotdata = JSON.parse(event.data) + ',';
+    var cleared = spotdata.replace(/,/g, "");
+   //alert (cleared);
+    document.getElementById("result").innerHTML = cleared;
+};
+</script>
+<script>
+var ctx = document.getElementById("myChart").getContext("2d");
+var data = {
+    labels: ["VLF", "160m", "80m", "60m", "40m", "30m", "20m", "17m", "15m", "12m", "10m", "6m", "4m", "2m", "70cm", "23cm", "6cm", "3cm"],
+    datasets: [
+        {
+            label: "My First dataset",
+            fillColor: "rgba(220,220,220,0.5)",
+            strokeColor: "rgba(220,220,220,0.8)",
+            highlightFill: "rgba(220,220,220,0.75)",
+            highlightStroke: "rgba(220,220,220,1)",
+            data: ^data^
+            //data: [65, 59, 80, 81, 56, 55, 40]
+            
+        }
+    ]
+};
+
+var myBarChart = new Chart(ctx).Bar(data);
+
+</script>
+
+
+<script>
+(function (window, document) {
+var menu = document.getElementById('menu'),
+    WINDOW_CHANGE_EVENT = ('onorientationchange' in window) ? 'orientationchange':'resize';
+
+function toggleHorizontal() {
+    [].forEach.call(
+        document.getElementById('menu').querySelectorAll('.custom-can-transform'),
+        function(el){
+            el.classList.toggle('pure-menu-horizontal');
+        }
+    );
+};
+
+function toggleMenu() {
+    // set timeout so that the panel has a chance to roll up
+    // before the menu switches states
+    if (menu.classList.contains('open')) {
+        setTimeout(toggleHorizontal, 500);
+    }
+    else {
+        toggleHorizontal();
+    }
+    menu.classList.toggle('open');
+    document.getElementById('toggle').classList.toggle('x');
+};
+
+function closeMenu() {
+    if (menu.classList.contains('open')) {
+        toggleMenu();
+    }
+}
+
+document.getElementById('toggle').addEventListener('click', function (e) {
+    toggleMenu();
+});
+
+window.addEventListener(WINDOW_CHANGE_EVENT, closeMenu);
+})(this, this.document);
+
+</script>
+</html>

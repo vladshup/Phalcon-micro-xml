@@ -1,0 +1,14 @@
+AddDefaultCharset UTF-8
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+Options +FollowSymlinks
+RewriteBase /
+
+RewriteCond %{HTTP_HOST} ^(www\.)?([^\.]+)\.dxmap.ru$
+RewriteRule ^(.*)$ http://dxmap.ru/$1 [R=301,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^.*$ index.php [NC,L]
+</IfModule>
